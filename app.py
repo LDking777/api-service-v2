@@ -24,7 +24,9 @@ app = Flask(__name__)
 hilo_telegram = threading.Thread(target=iniciar_bot_telegram, daemon=True)
 hilo_telegram.start()
 
-app.secret_key = os.getenv('SECRET_KEY', 'super_llave_secreta_hackathon')
+app.secret_key = os.getenv('SECRET_KEY')
+if not app.secret_key:
+    raise ValueError("🚨 SECRET_KEY no configurada.")
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 
 
 DOMINIOS_PERMITIDOS = ["http://localhost:5000", "https://tu-app-revenge.onrender.com"]
@@ -239,4 +241,6 @@ def chat():
 if __name__ == '__main__':
     port_num = int(os.getenv('PORT', 5000))
     # use_reloader=False para evitar que el bot de Telegram se ejecute dos veces
-    app.run(host='0.0.0.0', port=port_num, debug=True, use_reloader=False)
+    # El modo debug solo se activa explícitamente (FLASK_DEBUG=1), nunca en producción
+    modo_debug = os.getenv('FLASK_DEBUG', '0') == '1'
+    app.run(host='0.0.0.0', port=port_num, debug=modo_debug, use_reloader=False)

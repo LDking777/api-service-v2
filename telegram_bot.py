@@ -19,11 +19,14 @@ ALLOWED_USERS_STR = os.getenv('TELEGRAM_ALLOWED_USERS', '')
 ALLOWED_USERS = [int(uid.strip()) for uid in ALLOWED_USERS_STR.split(',') if uid.strip().isdigit()]
 
 # 🛡️ SEGURIDAD NIVEL 2: Contraseña y Sesiones
-BOT_PASSWORD = os.getenv('TELEGRAM_BOT_PASSWORD', 'ProtocoloRevenge2026')
+BOT_PASSWORD = os.getenv('TELEGRAM_BOT_PASSWORD')
 usuarios_autenticados = set() 
 
 if not TOKEN:
     print("⚠️ Advertencia: TELEGRAM_TOKEN no encontrado. El bot no se iniciará.")
+    bot = None
+elif not BOT_PASSWORD:
+    print("⚠️ Advertencia: TELEGRAM_BOT_PASSWORD no configurada. El bot no se iniciará.")
     bot = None
 else:
     bot = telebot.TeleBot(TOKEN)

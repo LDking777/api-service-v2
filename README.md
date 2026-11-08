@@ -51,10 +51,10 @@ La aplicación queda disponible en `http://localhost:5000`.
 | `GEMINI_API_KEY` | Gemini |
 | `SUPABASE_URL`, `SUPABASE_KEY` | Fuente de métricas |
 | `ADMIN_USER`, `ADMIN_PASS` | Acceso a la interfaz web (`ADMIN_PASS` es obligatoria) |
-| `SECRET_KEY` | Firma de la sesión de Flask |
+| `SECRET_KEY` | Firma de la sesión de Flask (obligatoria) |
 | `TELEGRAM_TOKEN` | Token del bot de Telegram |
-| `TELEGRAM_BOT_PASSWORD`, `TELEGRAM_ALLOWED_USERS` | Control de acceso al bot |
-| `RACE_TIMEOUT`, `PORT` | Opcionales: tiempo máximo de espera de los modelos y puerto |
+| `TELEGRAM_BOT_PASSWORD`, `TELEGRAM_ALLOWED_USERS` | Control de acceso al bot (sin contraseña, el bot no se inicia) |
+| `RACE_TIMEOUT`, `PORT`, `FLASK_DEBUG` | Opcionales: tiempo de espera de los modelos, puerto y modo debug (`1` solo en desarrollo) |
 
 ## Endpoints
 
@@ -67,7 +67,8 @@ La aplicación queda disponible en `http://localhost:5000`.
 
 ## Seguridad
 
-- Las credenciales se leen solo desde variables de entorno.
+- Las credenciales se leen solo desde variables de entorno, sin valores por defecto: la aplicación no arranca sin `ADMIN_PASS` ni `SECRET_KEY`, y el bot no se inicia sin contraseña.
+- El modo debug está desactivado salvo que se active explícitamente con `FLASK_DEBUG=1`.
 - Límite de peticiones por IP (200 por día y 50 por hora) y tamaño máximo de carga de 5 MB.
 - CORS restringido a dominios permitidos.
 
